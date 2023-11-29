@@ -1,0 +1,189 @@
+{
+  "profile-toggle": {
+    "friends": true
+  },
+  "discover": {
+    "friends": [
+      {
+        "id": 1,
+        "firstName": "John",
+        "lastName": "Doe",
+        "location": "Bangalore, India",
+        "jobRole": "UI/UX Designer",
+        "interests": [
+          "Cat lover",
+          "Travel",
+          "Music"
+        ],
+        "category": "New"
+      },
+      {
+        "id": 2,
+        "firstName": "John",
+        "lastName": "Doe",
+        "location": "Bangalore, India",
+        "jobRole": "UI/UX Designer",
+        "interests": [
+          "Cat lover",
+          "Travel",
+          "Music"
+        ],
+        "category": "New"
+      },
+      {
+        "id": 3,
+        "firstName": "John",
+        "lastName": "Doe",
+        "location": "Bangalore, India",
+        "jobRole": "UI/UX Designer",
+        "interests": [
+          "Cat lover",
+          "Travel",
+          "Music"
+        ],
+        "category": "Online"
+      },
+      {
+        "id": 4,
+        "firstName": "John",
+        "lastName": "Doe",
+        "location": "Bangalore, India",
+        "jobRole": "UI/UX Designer",
+        "interests": [
+          "Cat lover",
+          "Travel",
+          "Music"
+        ],
+        "category": "Recommended"
+      }
+    ]
+  },
+  "chat": {
+    "friends": [
+      {
+        "id": 1,
+        "name": "John Doe",
+        "status": "11:59 PM",
+        "role": "Friends",
+        "unReadMessage": 1,
+        "profileImage": "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?cs=srgb&dl=pexels-pixabay-220453.jpg&fm=jpg",
+        "lastMsg": "Hello!"
+      },
+      {
+        "id": 1,
+        "name": "Jane Doe",
+        "status": "12:59 PM",
+        "role": "Travel Partner",
+        "unReadMessage": 2,
+        "profileImage": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_ecZYigWPQ2a5HzNKa079lKLOlgt_mz3p6tmrHJ_X3w&s",
+        "lastMsg": "hope ur doing well!"
+      }
+    ],
+    "messages": [
+      {
+        "id": 1,
+        "messages": [
+          {
+            "id": 1,
+            "sender": "John",
+            "receiver": "Jane",
+            "message": "Hi Jane, how are you?",
+            "timestamp": "2023-04-17T15:30:00Z",
+            "read": true,
+            "senderId": 1,
+            "status": "sent"
+          },
+          {
+            "id": 2,
+            "sender": "Jane",
+            "receiver": "John",
+            "message": "Hi John, I'm doing well. How about you?",
+            "timestamp": "2023-04-17T15:31:00Z",
+            "read": true,
+            "senderId": 2,
+            "status": "received"
+          },
+          {
+            "id": 3,
+            "sender": "John",
+            "receiver": "Jane",
+            "message": "I'm good too, thanks for asking.",
+            "timestamp": "2023-04-17T15:32:00Z",
+            "read": true,
+            "senderId": 1,
+            "status": "sent"
+          },
+          {
+            "id": 4,
+            "sender": "Jane",
+            "receiver": "John",
+            "message": "Great to hear! Did you get the report I sent you?",
+            "timestamp": "2023-04-17T15:33:00Z",
+            "read": true,
+            "senderId": 2,
+            "status": "received"
+          },
+          {
+            "id": 5,
+            "sender": "John",
+            "receiver": "Jane",
+            "message": "Yes, I did. Thanks for sending it over.",
+            "timestamp": "2023-04-17T15:34:00Z",
+            "read": false,
+            "senderId": 1,
+            "status": "sent"
+          }
+        ]
+      }
+    ]
+  },
+  "home": {
+    "filter": [
+      "All",
+      "Places",
+      "Food",
+      "Nearby"
+    ],
+    "posts": [
+      {
+        "name": "John Doe",
+        "postedAt": "2 hours ago",
+        "postImages": [
+          "https://cdn.pixabay.com/photo/2014/11/13/17/04/heart-529607__480.jpg"
+        ],
+        "profileImage": "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?cs=srgb&dl=pexels-pixabay-220453.jpg&fm=jpg",
+        "description": "Exciting news! Our team just launched a new feature that will revolutionize the way you use our product.",
+        "like": 20,
+        "comments": [
+          {
+            "name": "Jane",
+            "comment": "nice!"
+          }
+        ],
+        "category": [
+          "Places",
+          "Nearby"
+        ]
+      },
+      {
+        "name": "Jesu Raj",
+        "postedAt": "2 hours ago",
+        "postImages": [
+          "https://4.img-dpreview.com/files/p/E~TS590x0~articles/3925134721/0266554465.jpeg"
+        ],
+        "profileImage": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_ecZYigWPQ2a5HzNKa079lKLOlgt_mz3p6tmrHJ_X3w&s",
+        "description": "Looking for a new book to read? Check out our latest blog post where we review some of our favorite reads of the year so far. Which one will you pick up next?",
+        "like": 40,
+        "comments": [
+          {
+            "name": "Jane",
+            "comment": "nice!"
+          }
+        ],
+        "category": [
+          "Food"
+        ]
+      }
+    ]
+  }
+}
