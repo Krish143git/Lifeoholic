@@ -31,9 +31,10 @@ const styles = StyleSheet.create({
       fontSize: 18,
       color: 'gray',
       textAlign: 'center',
-      paddingBottom:height*0.3,
+      paddingBottom:height*0.1,
+      paddingTop:10,
       fontFamily:'kollektif',
-      width:'70%',
+      width:'90%',
       marginTop:10
     },
     introTitleStyle: {

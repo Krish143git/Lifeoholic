@@ -8,6 +8,8 @@ import CategoryButton from "../categoryButton";
 import { MapPinIcon } from "react-native-heroicons/solid";
 import Avatar from "../../Avatar";
 import { getNearerListByType } from "../../../../services/discovery";
+import { StatusBar } from "react-native";
+import { Platform } from "react-native";
 
 const { height: HEIGHT, width: WIDTH } = Dimensions.get("window");
 const ASPECT_RATIO = WIDTH / HEIGHT;
@@ -57,13 +59,14 @@ export default function Map({ type }) {
       <View
         style={{
           position: "absolute",
-          zIndex: 1,
+          zIndex: 2,
           width: WIDTH * 0.95,
           alignSelf: "center",
           flexDirection: "row",
           alignItems: "center",
           backgroundColor: "#fff",
           paddingHorizontal: 2,
+          paddingTop: Platform.OS === "android" ?  StatusBar.currentHeight : HEIGHT * 0.05
         }}
       >
         <GooglePlacesAutocomplete
@@ -96,7 +99,7 @@ export default function Map({ type }) {
           style={{
             position: "absolute",
             zIndex: 1,
-            top: 20,
+            top: "10%",
             alignSelf: "center",
           }}
         >

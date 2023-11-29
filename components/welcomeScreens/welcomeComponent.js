@@ -27,38 +27,38 @@ const { width, height } = Dimensions.get('screen');
 const slides = [
     {
         key: 's1',
-        text: 'Lonely in a crowded place? Find interesting people nearby and make friends!',
+        text: 'Lonely in a crowded place? Find interesting \n people nearby and make friends!',
         title: 'Find Someone',
         //image: <Image style={styles.introImageStyle} source={require('../../assets/images/onboarding_screen_find_some_final22.png' )} />
-        image: <FindSomeone width={'100%'} height={'50%'} />
+        image: <FindSomeone width={'100%'} height={'30%'} />
     },
     {
         key: 's2',
         title: 'Keep Surfing',
-        text: 'Tap profiles and if you like them tap on the ❤️ icon!',
+        text: 'Tap profiles and if you like them \n tap on the ❤️ icon!',
         //image: <Image style={styles.introImageStyle} source={require('../../assets/images/keep_surfing.png' )} />
-        image: <KeepSurfing width={'100%'} height={'50%'} />
+        image: <KeepSurfing width={'100%'} height={'30%'} />
     },
     {
         key: 's3',
         title: 'Match Marketing',
-        text: `If someone likes you back, It's a match and you can connect`,
+        text: `If someone likes you back,\n It's a match and you can connect`,
         //image: <Image style={styles.introImageStyle} source={require('../../assets/images/onboarding_match_making_final.png' )} />
-        image: <Matchmaking width={'100%'} height={'50%'} />
+        image: <Matchmaking width={'100%'} height={'30%'} />
     },
     {
         key: 's4',
         title: 'Chat & Share',
-        text: 'Start chatting with your match and share your feelings',
+        text: 'Start chatting with your match and \n share your feelings',
         //image: <Image style={styles.introImageStyle} source={require('../../assets/images/onboarding_screen_chat_share_final22.png' )} />
-        image: <ChatAndshare width={'100%'} height={'50%'} />
+        image: <ChatAndshare width={'100%'} height={'30%'} />
     },
     {
         key: 's5',
         title: 'Find Travel Partner',
-        text: 'Find a travel partner for your next adventure',
+        text: 'Find a travel partner for your \n next adventure',
         //image: <Image style={styles.introImageStyle} source={require('../../assets/images/travel_partner.png' )} />
-        image: <TravelPatner width={'100%'} height={'50%'} />
+        image: <TravelPatner width={'100%'} height={'30%'} />
     }
    
 ];

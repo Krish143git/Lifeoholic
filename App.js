@@ -705,8 +705,6 @@ export default function App() {
           </Stack.Navigator>
         </StripeProvider>
       </NavigationContainer>
-
-      <StatusBar style="auto" />
     </GestureHandlerRootView>
   );
 }

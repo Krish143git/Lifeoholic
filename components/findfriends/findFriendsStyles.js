@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
         width: width*0.8,
         marginHorizontal:width*0.1,
         position:'absolute',
-        bottom:height*0.1
+        bottom:height*0.14
     },
     image:{
         width: width*0.8,
