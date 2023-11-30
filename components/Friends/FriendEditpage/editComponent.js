@@ -100,7 +100,10 @@ const EditComponent = (props) => {
     const validateFields = () => {
         let keys = Object.keys(state);
         for (let i = 0; i < keys.length; i++) {
-            if (Array.isArray(state[keys[i]]) ? !state[keys[i]].length : !state[keys[i]]) {
+            if ((Array.isArray(state[keys[i]]) ? !state[keys[i]].length : !state[keys[i]])) {
+                if(!isDetailsExist && keys[i] === "friendProfileId"){
+                   break // friendProfileId is needed at the time updating the Friend
+                }
                 return false
             }
         }
@@ -162,7 +165,7 @@ const EditComponent = (props) => {
             formData.append("zodiacSign", state.zodiacSign);
             formData.append("userId", user?._id);
             formData.append("name", state.name);
-            let data = await createFriends(formData);
+          let data = await createFriends(formData);
             if (data.message == "Already Friends Profile is Present with the user") {
                 showMessage({ text: 'Friends profile created!', color: 'gray' })
             } else {
