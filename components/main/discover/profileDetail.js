@@ -191,7 +191,7 @@ export default function ProfileDetail(props) {
                 </Text>
               </View>
               <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
-                {personality.map((el) => {
+                {personality[0].split(',').map((el) => {
                   return <CategoryButton title={el} />;
                 })}
               </View>
@@ -209,13 +209,15 @@ export default function ProfileDetail(props) {
                 </Text>
               </View>
               <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
-                {interestedIn.map((el) => {
+                {interestedIn[0].split(',').map((el) => {
                   return <CategoryButton title={el} />;
                 })}
               </View>
             </>
           ) : null}
 
+         {lookingFor &&
+          <>
           {Divider}
 
           <View style={{ flexDirection: "row" }}>
@@ -224,8 +226,11 @@ export default function ProfileDetail(props) {
             </Text>
           </View>
           <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
+            {console.log("lookingFor>>>>",lookingFor)}
             <CategoryButton title={lookingFor} />
           </View>
+          </>
+          }
 
           {Divider}
 

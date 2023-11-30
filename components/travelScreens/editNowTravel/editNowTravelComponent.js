@@ -7,14 +7,15 @@ import { AntDesign } from '@expo/vector-icons'
 import { FontAwesome5, Ionicons, Octicons, FontAwesome, MaterialCommunityIcons, Entypo, MaterialIcons } from '@expo/vector-icons';
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { calculateAge } from '../../../common/Common';
+import { calculateAge, upperLowerCharacter } from '../../../common/Common';
+import CustomPickModel from '../../../common/CustomPickModel/CustomPickModel';
 const { width, height } = Dimensions.get('screen');
 //MATCH MAKING SCREENS
 const EditNowComponent = () => {
 
     const Navigation = useNavigation();
     const isCarousel = React.useRef(null);
-
+    const [selectedName, setSelectedName] = React.useState('');
     const [state, setState] = React.useState({
         name: 'Sai Chand',
         age: 26,
@@ -29,7 +30,7 @@ const EditNowComponent = () => {
         industry: "Web Design",
         somoking: 'No',
         drinking: 'Socially',
-        intrestedIn: ['Football','Chess','Music','Movies'],
+        interestedIn: ['Football','Chess','Music','Movies'],
         homeTown: 'Mysore',
         currentLocation: 'Banglore'
     });
@@ -67,34 +68,83 @@ const EditNowComponent = () => {
     ];
 
     const section1 = [
-        { key: 'Age', icon: <FontAwesome5 name="calendar-day" size={16} color="black" style={{ marginLeft: 5 }} />, data: { name: state.age } },
-        { key: 'Gender', icon: <MaterialCommunityIcons name="gender-male-female-variant" size={20} color="black" />, data: { name: state.gender } },
-        { key: 'Height', icon: <MaterialIcons name="height" size={20} color="black" />, data: { name: state.height } },
-        { key: 'Body Type', icon: <FontAwesome5 name="male" size={20} color="black" style={{ marginLeft: 10 }} />, data: { name: state.bodyType } },
+        { key: 'Age', icon: <FontAwesome5 name="calendar-day" size={16} color="black" style={{ marginLeft: 5 }} />, data: { name: state.age }, listData: [16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30] },
+        { key: 'Gender', icon: <MaterialCommunityIcons name="gender-male-female-variant" size={20} color="black" />, data: { name: state.gender },listData: [
+                'Male', 'Female', 'Others'
+            ] },
+        { key: 'Height', icon: <MaterialIcons name="height" size={20} color="black" />, data: { name: state.height } ,listData: [
+            160, 161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175, 176, 177, 178, 179, 180
+        ] },
+        { key: 'Body Type', icon: <FontAwesome5 name="male" size={20} color="black" style={{ marginLeft: 10 }} />, data: { name: state.bodyType },  listData: ["Slim", "Athletic", "Fit", "Curvy", "Average", "Muscular", "Toned", "Petite", "Voluptuous", "Stocky", "Lean", "Thin", "Well-built", "Full-figured", "Hourglass", "Chubby", "Skinny,Heavyset", "Broad-shouldered", "Pear-shaped"]},
     ];
 
     const section2 = [
-        { key: 'Mother Tongue', icon: <Image source={require('../../../assets/images/language.png')} style={styles.icon} />, data: { name: state.motherTongue } },
-        { key: 'Languages Known', icon: <Image source={require('../../../assets/images/language.png')} style={styles.icon} />, data: { name: state.languagesKnown } },
+        { key: 'Mother Tongue', icon: <Image source={require('../../../assets/images/language.png')} style={styles.icon} />, data: { name: state.motherTongue }, listData: ["Angika", "Arunachali", "Assamese", "Awadhi", "Badaga", "Bengali", "Bhojpuri", "Bihari", "Brij", "Chatisgarhi", "Dogri", "English", "French", "Garhwali", "Garo", "Gujarati", "Haryanvi", "Himachali/Pahar",
+        "Hindi", "Kanauji", "Kannada", "Kashmiri", "Khandesi", "Khasi", "Konkani", "Koshali", "Kumaoni", "Kutchi", "Ladacki", "Lepcha", "Magahi", "Maithili", "Malayalam", "Manipuri", "Marathi", "Marwari", "Miji", "Mizo", "Monpa", "Nepali", "Nicobarese",
+        "Oriya", "Punjabi", "Rajasthani", "Sanskrit", "Santhali", "Sindhi", "Sourashtra", "Tamil", "Telugu", "Tripuri", "Tulu", "Urdu"
+    ] },
+        { key: 'Languages Known', icon: <Image source={require('../../../assets/images/language.png')} style={styles.icon} />, data: { name: state.languagesKnown }, listData: ["English", "Hindi", "Urdu", "Telugu", "Tamil", "Kannada"] },
     ]
 
     const section3 = [
-        { key: 'Education', icon: <FontAwesome5 name="book-open" size={16} color="black" />, data: { name: state.education } },
-        { key: 'Work', icon: <Image source={require('../../../assets/images/portfolio.png')} style={[styles.icon]} />, data: { name: state.work} },
-        { key: 'Industry', icon: <Ionicons name="cube" size={20} color="black" />, data: { name: state.industry } },
+        { key: 'Education', icon: <FontAwesome5 name="book-open" size={16} color="black" />, data: { name: state.education },listData: ["Engineering", "Degree", "Intermediate", "MCA", "Msc"] },
+        { key: 'Work', icon: <Image source={require('../../../assets/images/portfolio.png')} style={[styles.icon]} />, data: { name: state.work}, listData: ["Developer", "Software Tester", "UI/UX Designer", "Human Resource Manager", "Suppoer Engineer"] },
+        { key: 'Industry', icon: <Ionicons name="cube" size={20} color="black" />, data: { name: state.industry },listData: ["I.T", "Auto mobile", "Tele communications", "Hardware", "Mechanical"] },
     ]
 
     const section4 = [
-        { key: 'Smoking', icon: <FontAwesome5 name="smoking" size={18} color="black" />, data: { name: state.somoking } },
-        { key: 'Drinking', icon: <Entypo name="drink" size={18} color="black" />, data: { name: state.drinking } },
-        { key: 'Interested In', icon: <FontAwesome name="paint-brush" size={16} color="black" />, data: { name: state.intrestedIn } },
+        { key: 'Smoking', icon: <FontAwesome5 name="smoking" size={18} color="black" />, data: { name: state.somoking },listData: ["Yes", "No"] },
+        { key: 'Drinking', icon: <Entypo name="drink" size={18} color="black" />, data: { name: state.drinking },listData: ["Regular", "Socially", "No habbit"] },
+        { key: 'Interested In', icon: <FontAwesome name="paint-brush" size={16} color="black" />, data: { name: state.interestedIn },listData: {
+            "Sports and Fitness": [
+                "Running", "Yoga", "Tennis", "Soccer", "Gym workouts", "Cycling", "Swimming", "Basketball", "Hiking", "Martial arts", "Chess", "Shattle"],
+            "Arts and Culture": [
+                "Painting", "Photography", "Writing", "Sculpting", "Drawing", "Film and cinema", "Music (listening or playing)", "Theater", "Literature", "Dance"
+            ],
+            "Food and Dining": [
+                "Cooking", "Trying new restaurants", "Baking", "Wine tasting", "Coffee lovers", "Vegetarian/vegan cuisine", "Foodie adventures", "Farmers markets", "Culinary explorations", "Exotic cuisines"
+            ],
+            "Travel and Adventure": [
+                "Backpacking", "Road trips", "Camping", "Exploring new cities", "Adventure sports", "Hiking trails", "Beach destinations", "Cultural tourism", "Mountain climbing", "Historical sites"
+            ],
+            "Technology and Gaming": [
+                "Video games", "Coding/programming", "Virtual reality", "Mobile apps", "AI and machine learning", "Web development", "Tech gadgets", "E-sports",
+                "Science and technology news", "Computer hardware"
+            ],
+            "Nature and Outdoors": [
+                "Gardening", "Birdwatching", "Wildlife conservation", "Nature photography", "Beach walks", "Outdoor photography", "National parks", "Environmental activism", "Sailing", "Stargazing"
+            ],
+            "Music and Entertainment": [
+                "Live concerts", "Music festivals", "DJ events", "Karaoke", "Playing musical instruments", "Jazz and blues", "Pop and rock", "Classical music", "Broadway shows", "Stand-up comedy"
+            ],
+            "Reading and Learning": [
+                "Book clubs", "Self-improvement", "History", "Science and technology", "Philosophy", "Personal development", "TED Talks", "Podcasts", "Educational workshops", "Language learning"
+            ],
+            "Social Causes": [
+                "Volunteering", "Animal rights", "Environmental conservation", "Human rights", "Community service", "Sustainable living", "Charity work", "Fundraising events", "Social justice", "Advocacy"
+            ],
+            "Personal Development": [
+                "Meditation", "Mindfulness", "Self-reflection", "Goal setting", "Life coaching", "Fitness challenges", "Positive psychology", "Stress management", "Leadership skills", "Time management"
+            ]
+        } },
     ]
 
     const section5 = [
-        { key: 'Home Town', icon: <FontAwesome name="home" size={20} color="black" />, data: { name: state.homeTown } },
-        { key: 'Current Location', icon: <Ionicons name="location-sharp" size={20} color="black" />, data: { name: state.currentLocation } },
+        { key: 'Home Town', icon: <FontAwesome name="home" size={20} color="black" />, data: { name: state.homeTown }, listData: ["Mysore", "Koimbatur", "Nellore", "Tirupathi", "Guntur"] },
+        { key: 'Current Location', icon: <Ionicons name="location-sharp" size={20} color="black" />, data: { name: state.currentLocation }, listData: ["Banglore", "Chennai", "Andhra Pradesh", "Telangana", "Utter Pradesh"],listData: ["Banglore", "Chennai", "Andhra Pradesh", "Telangana", "Utter Pradesh"] },
     ]
 
+    const addRemoveLanguages = (item, itemLable) => {
+        console.log(itemLable)
+        let tempArr = [...state[itemLable]];
+        if (tempArr.includes(item)) {
+            let index = tempArr.indexOf(item);
+            tempArr.splice(index, 1);
+        } else {
+            tempArr.push(item);
+        }
+        setState({ ...state, [itemLable]: tempArr })
+    }
 
     const renderImage = ({ item, index }) => {
 
@@ -113,6 +163,59 @@ const EditNowComponent = () => {
         Navigation.navigate("TravelAboutMe",{"personalData": state});
     }
 
+    const renderIntrest = (item) => {
+        let keys = Object.keys(item.listData);
+        let data = item.listData;
+        return (
+            <View style={{ margin: 10 }}>
+                {
+                    keys.map((itm) => {
+                        return (
+                            <View>
+                                <Text style={{ color: '#000' }}>{itm}</Text>
+                                {renderOptionList1(data[itm], item)}
+                            </View>
+                        )
+                    })
+                }
+            </View>
+        )
+    }
+
+    const renderOptionList1 = (optionsItem, item) => {
+        const itemLable = upperLowerCharacter(item.key);
+        let selectedItems = item.data.name;
+        return (
+            <View style={{ margin: 10, flexDirection: 'row', flexWrap: 'wrap' }}>
+                {
+                    optionsItem.map((item, ind) => {
+                        return (
+                            <TouchableOpacity onPress={() => addRemoveLanguages(item, itemLable)} style={{ padding: 10, borderWidth: 1, borderRadius: 10, margin: 5, backgroundColor: selectedItems.includes(item) ? 'lightgray' : null }}>
+                                <Text>{item}</Text>
+                            </TouchableOpacity>
+                        )
+                    })
+                }
+            </View>
+        )
+    }
+    const renderOptionList = (optionsItem) => {
+        const itemLable = upperLowerCharacter(optionsItem.key);
+        let selectedItems = optionsItem.data.name;
+        return (
+            <View style={{ margin: 10, flexDirection: 'row', flexWrap: 'wrap' }}>
+                {
+                    optionsItem.listData.map((item, ind) => {
+                        return (
+                            <TouchableOpacity onPress={() => addRemoveLanguages(item, itemLable)} style={{ padding: 10, borderWidth: 1, borderRadius: 10, margin: 5, backgroundColor: selectedItems.includes(item) ? 'lightgray' : null }}>
+                                <Text>{item}</Text>
+                            </TouchableOpacity>
+                        )
+                    })
+                }
+            </View>
+        )
+    }
 
     return (
         <ScrollView showsVerticalScrollIndicator={false}>
@@ -163,7 +266,10 @@ const EditNowComponent = () => {
                     {
                         section1.map((item, ind) => {
                             return (
-                                <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginHorizontal: 5 }}>
+                                <>
+                                <TouchableOpacity onPress={() => {
+                                    setSelectedName(item.key)
+                                }} style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginHorizontal: 5 }}>
                                     <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                                         {/* <Text>{item.icon}</Text> */}
                                         {item.icon}
@@ -173,7 +279,12 @@ const EditNowComponent = () => {
                                         <Text>{item.data.name}</Text>
                                         <Octicons name="chevron-right" size={20} color="black" style={{ marginLeft: 10 }} />
                                     </View>
-                                </View>
+                                </TouchableOpacity>
+                                {
+                                        selectedName == item.key ?
+                                            <CustomPickModel state={state} item={item} setState={setState} onSelectItem={() => setSelectedName('')} /> : null
+                                    }
+                                </>
                             )
                         })
                     }
@@ -187,7 +298,14 @@ const EditNowComponent = () => {
                     {
                         section2.map((item, ind) => {
                             return (
-                                <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginHorizontal: 5 }}>
+                                <>
+                                <TouchableOpacity onPress={() => {
+                                        if (selectedName == '') {
+                                            setSelectedName(item.key)
+                                        } else {
+                                            setSelectedName('')
+                                        }
+                                    }} style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginHorizontal: 5 }}>
 
                                     <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                                         {item.icon}
@@ -202,7 +320,14 @@ const EditNowComponent = () => {
                                         <Octicons name="chevron-right" size={20} color="black" style={{ marginLeft: 10 }} />
                                     </View>
 
-                                </View>
+                                </TouchableOpacity>
+                                {
+                                        selectedName == item.key ? Array.isArray(item.data.name) ?
+                                            renderOptionList(item)
+                                            :
+                                            <CustomPickModel state={state} item={item} setState={setState} onSelectItem={() => setSelectedName('')} /> : null
+                                    }
+                                </>
                             )
                         })
                     }
@@ -216,7 +341,10 @@ const EditNowComponent = () => {
                    {
                     section3.map((item,ind)=>{
                         return(
-                            <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginHorizontal: 5 }}>
+                            <>
+                            <TouchableOpacity onPress={() => {
+                                setSelectedName(item.key)
+                            }} style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginHorizontal: 5 }}>
 
                             <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                                 <Text>{item.icon}</Text>
@@ -227,7 +355,12 @@ const EditNowComponent = () => {
                                 <Octicons name="chevron-right" size={20} color="black" style={{ marginLeft: 10 }} />
                             </View>
 
-                        </View>
+                        </TouchableOpacity>
+                        {
+                            selectedName == item.key ?
+                                <CustomPickModel state={state} item={item} setState={setState} onSelectItem={() => setSelectedName('')} /> : null
+                        }
+                        </>
                         )
                     })
                    }
@@ -239,7 +372,14 @@ const EditNowComponent = () => {
                  {
                     section4.map((item,ind)=>{
                         return(
-                            <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginHorizontal: 5 }}>
+                            <>
+                            <TouchableOpacity onPress={() => {
+                                if (selectedName == '') {
+                                    setSelectedName(item.key)
+                                } else {
+                                    setSelectedName('')
+                                }
+                            }}  style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginHorizontal: 5 }}>
 
                             <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                                 <Text>{item.icon}</Text>
@@ -254,7 +394,14 @@ const EditNowComponent = () => {
                                             : item.data.name}</Text>
                                 <Octicons name="chevron-right" size={20} color="black" style={{ marginLeft: 10 }} />
                             </View>
-                        </View>
+                        </TouchableOpacity>
+                         {
+                            selectedName == item.key ? Array.isArray(item.data.name) ? item.key == "Interested In" ? renderIntrest(item) :
+                                renderOptionList(item)
+                                :
+                                <CustomPickModel state={state} item={item} setState={setState} onSelectItem={() => setSelectedName('')} /> : null
+                        }
+                    </>
                         )
                     })
                  }
@@ -318,7 +465,10 @@ const EditNowComponent = () => {
                  {
                     section5.map((item,ind)=> {
                         return(
-                            <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginHorizontal: 5 }}>
+                            <>
+                            <TouchableOpacity onPress={() => {
+                                setSelectedName(item.key)
+                            }} style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginHorizontal: 5 }}>
                             <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                                 <Text>{item.icon}</Text>
                                 <Text style={[styles.item, item.style]}>{item.key}</Text>
@@ -327,7 +477,12 @@ const EditNowComponent = () => {
                                 <Text>{item.data.name}</Text>
                                 <Octicons name="chevron-right" size={20} color="black" style={{ marginLeft: 10 }} />
                             </View>
-                        </View>
+                        </TouchableOpacity>
+                        {
+                            selectedName == item.key ?
+                                    <CustomPickModel state={state} item={item} setState={setState} onSelectItem={() => setSelectedName('')} /> : null
+                        }
+                        </>
                         )
                     })
                  }
