@@ -163,10 +163,10 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     borderColor: "#DDDDDD",
     borderWidth: 1,
-    paddingHorizontal: 25,
-    paddingVertical:10,
+    paddingHorizontal: 10,
+    paddingVertical:8,
     alignItems: "center",
-    marginVertical:10
+    marginVertical:8
   },
 
   images: {

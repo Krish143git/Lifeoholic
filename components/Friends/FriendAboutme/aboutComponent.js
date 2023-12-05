@@ -239,7 +239,7 @@ const AboutComponent = (props) => {
             <Text style={styles.subnames}>Interests</Text>
             <View style={styles.button}>
               {
-                personalData?.interestedIn.map((item,ind)=> {
+                personalData?.interestedIn[0].split(',').map((item,ind)=> {
                   return (
                     <TouchableOpacity style={styles.interest}>
                     <Text style={styles.badgeText}>{item}</Text>

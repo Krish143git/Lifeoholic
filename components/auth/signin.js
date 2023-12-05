@@ -76,7 +76,7 @@ const Signin = () => {
     return (
         <View style={styles.container}>
 
-            <ScrollView style={styles.formContainer}>
+            <ScrollView style={styles.formContainer} showsVerticalScrollIndicator={false}>
                 <View style={styles.imgContainer}>
                     <Image source={require('../../assets/images/logo.png')} style={styles.image} />
                 </View>
