@@ -12,8 +12,8 @@ import {API_BASE_URL} from '../../services/config'
 const Signin = () => {
     const Navigation = useNavigation();
     const [state, setState] = useState({
-        email: '',
-        password: ''
+        email: 'vamsi143@gmail.com',
+        password: 'Vamsi@123'
     });
     const [rememberMe, setRememberMe] = useState(false);
     const [secure,setSecure] = useState(true);

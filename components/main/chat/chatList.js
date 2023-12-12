@@ -20,11 +20,11 @@ import * as ChatServices from "../../../services/chat";
 
 export default function ChatList() {
   const navigation = useNavigation();
-  const [friends, setFriends] = useState([]);
+  const [friends, setFriends] = useState([{senderImage:[""],senderUsername:"Krishna",lastMsg:"Hi"},{senderImage:[""],senderUsername:"Surendra",lastMsg:"Bye"}]);
   const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
-    fetchChatList();
+    // fetchChatList();
   }, []);
 
   const fetchChatList = async () => {

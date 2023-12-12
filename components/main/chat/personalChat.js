@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import {
   View,
   FlatList,
@@ -12,6 +12,8 @@ import {
   KeyboardAvoidingView,
   Keyboard,
   ActivityIndicator,
+  SafeAreaView,
+  StatusBar,
 } from "react-native";
 import * as Icon from "react-native-heroicons/solid";
 import * as ImagePicker from "expo-image-picker"; // Import expo-image-picker
@@ -22,6 +24,8 @@ import {
 } from "../../../services/chat";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Bubble, GiftedChat, InputToolbar, Send } from "react-native-gifted-chat";
+import { socket } from "../../..";
 
 const ChatScreen = ({ route }) => {
   const navigation = useNavigation();
@@ -33,7 +37,8 @@ const ChatScreen = ({ route }) => {
   const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
-    fetchChat();
+    socket.connect();
+    // fetchChat();
   }, []);
 
   const fetchChat = async () => {
@@ -173,6 +178,22 @@ const ChatScreen = ({ route }) => {
     }
   };
 
+
+  useEffect(() => {
+    setMessages([
+      {
+        _id: 1,
+        text: 'Hello developer',
+        createdAt: new Date(),
+        user: {
+          _id: 2,
+          name: 'React Native',
+          avatar: 'https://reactjs.org/logo-og.png',
+        },
+      },
+    ])
+  }, [])
+
   const onDeleteMessages = async () => {
     let updatedMsg = messages.filter((m) => !selectedMessages.includes(m._id));
     const selectedMsg = selectedMessages;
@@ -185,18 +206,116 @@ const ChatScreen = ({ route }) => {
     }
   };
 
+  const onSend = useCallback((messages = []) => {
+    console.log("messages>>", messages)
+
+   // Send message to Server
+      socket.emit('message', {
+        
+      });
+      
+      // listen messages from Server
+      socket.on('message', (data) => {
+        console.log(data);
+      });
+    setMessages(previousMessages =>
+      GiftedChat.append(previousMessages, messages),
+    )
+  }, [])
+
+  const renderBubble = (props) => (
+    <Bubble
+      {...props}
+      wrapperStyle={{
+        right: {
+          backgroundColor: 'black',
+
+        },
+        left: {
+          backgroundColor: '	#F0F0F0',
+
+        }
+      }}
+
+      textStyle={{
+        right: {
+          color: 'white'
+        },
+        left: {
+          color: 'black'
+        }
+      }}
+
+    />
+  )
+
+  const renderSend = (props) => {
+    return (
+      <Send {...props}>
+        <Icon.PaperAirplaneIcon color={"#fff"} fill="white" size={22} style={{ backgroundColor: 'black' }} />
+      </Send>
+
+
+
+    )
+  }
+
+  const onMessageSendiconPressed = () =>{
+
+  }
+
+  const onAtatchementIconPressed =() =>{
+    
+  }
+
+  const renderInputToolbar = (props) => {
+    return (
+      <View style={styles.inputToolBarContainer}>
+        <TextInput style={styles.inputText} multiline />
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <TouchableOpacity  onPress={onAtatchementIconPressed}>
+            <Icon.PaperClipIcon color={'black'} size={20} />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={onMessageSendiconPressed} style={{ backgroundColor: 'black', height: 30, padding: 5, justifyContent: 'center', alignItems: 'center', borderRadius: 5, marginHorizontal: 10 }}>
+            <Icon.PaperAirplaneIcon size={20} fill={'white'} />
+          </TouchableOpacity>
+        </View>
+
+      </View>
+    )
+  }
+
+
   return (
     <>
-      {selectedMessages.length ? (
+      {/* {selectedMessages.length ? (
         <ActionHeader
           onClose={() => setSelectedMessages([])}
           onDelete={onDeleteMessages}
         />
       ) : (
         <Header onPressBack={navigation.goBack} />
-      )}
+      )} */}
+      <View style={{ flex: 1, marginTop: Platform.OS === "android" ? StatusBar.currentHeight : 0, backgroundColor: 'white', paddingBottom: 10 }}>
+        <Header title={"Chat"} onPressBack={navigation.goBack} />
+        <GiftedChat
+          messages={messages}
+          onSend={messages => onSend(messages)}
+          renderBubble={renderBubble}
+          alwaysShowSend={false}
+          showAvatarForEveryMessage={true}
+          renderInputToolbar={renderInputToolbar}
+          // renderSend={renderSend}
+          user={{
+            _id: 1,
+            name: 'React Native',
+            avatar: 'https://reactjs.org/logo-og.png',
+          }}
+        />
+      </View>
 
-      <KeyboardAvoidingView
+
+      {/* <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior="padding"
         keyboardVerticalOffset={50}
@@ -279,7 +398,7 @@ const ChatScreen = ({ route }) => {
             </View>
           </View>
         </View>
-      </KeyboardAvoidingView>
+      </KeyboardAvoidingView> */}
     </>
   );
 };
@@ -400,10 +519,13 @@ const styles = StyleSheet.create({
     backgroundColor: "#F9FAFB",
   },
   inputText: {
-    flex: 1,
+    width: '70%',
+    height: 50,
     marginLeft: 8,
-    fontSize: 16,
+    fontSize: 18,
     color: "#111827",
+    justifyContent: 'center',
+    paddingVertical: 5
   },
   inputContainer: {
     flexDirection: "row",
@@ -438,6 +560,18 @@ const styles = StyleSheet.create({
     padding: 8,
     backgroundColor: "#60A5FA",
     borderRadius: 16,
+  },
+  inputToolBarContainer: {
+    width: '90%',
+    height: 50,
+    alignSelf: 'center',
+    borderWidth: 0.5,
+    borderColor: 'grey',
+    borderRadius: 10,
+    marginBottom: 20,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
   },
 });
 

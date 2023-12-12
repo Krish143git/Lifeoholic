@@ -16,8 +16,7 @@ export default function ChatStack() {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="chatList" component={ChatList} />
-        <Stack.Screen name="personalChat" component={personalChat} />
+        <Stack.Screen name="chatList" component={ChatList} />        
       </Stack.Navigator>
     </SafeAreaView>
   );

@@ -1,5 +1,5 @@
 import { View, Text, Dimensions, Image, TextInput, ScrollView, FlatList, TouchableOpacity, Switch } from 'react-native'
-import React, { useEffect, useId } from 'react'
+import React, { useEffect, useId, useState } from 'react'
 import styles from './editNowTravelStyles';
 import Carousel from 'react-native-snap-carousel';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -9,6 +9,9 @@ import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { calculateAge, upperLowerCharacter } from '../../../common/Common';
 import CustomPickModel from '../../../common/CustomPickModel/CustomPickModel';
+import EditTextInputModal from './editTextInputModal';
+import { showMessage } from '../../../hoc/showMessage';
+import { createTravelPartner, fetchFriends, fetchTravelPartner, updateMatchMaking, updateTravelPartner } from '../../../services/mainNav';
 const { width, height } = Dimensions.get('screen');
 //MATCH MAKING SCREENS
 const EditNowComponent = () => {
@@ -16,42 +19,74 @@ const EditNowComponent = () => {
     const Navigation = useNavigation();
     const isCarousel = React.useRef(null);
     const [selectedName, setSelectedName] = React.useState('');
+    const [tripModalVisible,setTripModalVisible] = useState(false)
+    const [isDetailsExist, setIsDetailsExist] = React.useState(false);
+    const [user, setUser] = React.useState(null);
+
     const [state, setState] = React.useState({
         name: 'Sai Chand',
         age: 26,
         aboutMe: 'This is sai chand',
         gender: 'Male',
-        height: '162cm',
+        height: 162,
         bodyType: 'Slim',
         motherTongue: 'Telugu',
         languagesKnown: ['Telugu', 'English', 'Tamil', 'Hindi'],
         education: 'Computer Science Engineering',
         work: 'UI/UX Designer',
         industry: "Web Design",
-        somoking: 'No',
+        smoking: 'No',
         drinking: 'Socially',
         interestedIn: ['Football', 'Chess', 'Music', 'Movies'],
-        homeTown: 'Mysore',
-        currentLocation: 'Banglore'
+        tripDetails:[],
     });
+
+   
 
 
     useEffect(() => {
-        AsyncStorage.getItem('userId').then(uId => {
-            console.log('useId', useId);
-        });
-        AsyncStorage.getItem('userdata').then((res) => {
+        AsyncStorage.getItem('personalData').then((res) => {
             let usrData = JSON.parse(res);
             let age = calculateAge(usrData.dateOfBirth);
             if (usrData) {
-                // setState({
-                //     ...state,
-                //     name: usrData.firstName,
-                //     age: age
-                // })
+                setState({
+                    ...state,
+                    name: usrData.firstName,
+                    age: age
+                })
             }
+            setUser(usrData);
         });
     }, [])
+
+    useEffect(() => {
+        getFriends()
+    }, [user])
+
+    const getFriends = async () => {
+        let data = await fetchTravelPartner(user?._id);
+        console.log(">>>>>>>>Data>>>>",data)
+        if (data.message == "Suceessfully fetched the data") {
+            let uData = data.result;
+            // setIsDetailsExist(true);
+            setState({
+                ...state,
+                friendProfileId: uData._id,
+                gender: uData.gender,
+                height: uData.height,
+                bodyType: uData.bodyType,
+                motherTongue: uData.motherTongue,
+                education: uData.education,
+                languagesKnown: uData.languagesKnown,
+                work: uData.work,
+                industry: uData.industry,
+                smoking: uData.smoking,
+                drinking: uData.drinking, 
+                interestedIn: uData.interestedIn,
+                aboutMe: uData.aboutMe
+            })
+        }
+    }
 
     const data = [
         {
@@ -99,7 +134,7 @@ const EditNowComponent = () => {
     ]
 
     const section4 = [
-        { key: 'Smoking', icon: <FontAwesome5 name="smoking" size={18} color="black" />, data: { name: state.somoking }, listData: ["Yes", "No"] },
+        { key: 'Smoking', icon: <FontAwesome5 name="smoking" size={18} color="black" />, data: { name: state.smoking }, listData: ["Yes", "No"] },
         { key: 'Drinking', icon: <Entypo name="drink" size={18} color="black" />, data: { name: state.drinking }, listData: ["Regular", "Socially", "No habbit"] },
         {
             key: 'Interested In', icon: <FontAwesome name="paint-brush" size={16} color="black" />, data: { name: state.interestedIn }, listData: {
@@ -159,6 +194,7 @@ const EditNowComponent = () => {
         } else {
             tempArr.push(item);
         }
+         console.log("interestedIn>>>>",tempArr)
         setState({ ...state, [itemLable]: tempArr })
     }
 
@@ -233,7 +269,93 @@ const EditNowComponent = () => {
         )
     }
 
+    const validateFields = () => {
+        let keys = Object.keys(state);
+        console.log("Object.keys(state)>>>>",keys)
+        for (let i = 0; i < keys.length; i++) {
+            if ((Array.isArray(state[keys[i]]) ? !state[keys[i]].length : !state[keys[i]])) {
+                console.log(">>>>>>>>>>>",keys[i])
+                if(!isDetailsExist && keys[i] === "friendProfileId"){
+                   break // friendProfileId is needed at the time updating the Friend
+                }
+                return false
+            }
+        }
+        return true;
+    }
+    const saveTravelPartnerDetails = async () => {
+        if (validateFields()) {
+            let finalData = { ...state, userId: user?._id }
+            console.log(">>>>>>>>>",user._id)
+            let formData = new FormData();
+            formData.append("userId", user?._id);
+            formData.append("age", state.age);
+            formData.append("aboutMe", state.aboutMe);
+            formData.append("gender", state.gender);
+            formData.append("height", state.height);
+            formData.append("bodyType", state.bodyType);
+            formData.append("motherTongue", state.motherTongue);
+            formData.append("languagesKnown", state.languagesKnown);
+            formData.append("education", state.education);
+            formData.append("work", state.work);
+            formData.append("industry", state.industry);
+            formData.append("smoking", state.smoking);
+            formData.append("drinking", state.drinking);
+            formData.append("interestedIn", state.interestedIn);
+            formData.append("trips", state.tripDetails);
+           
+            let data = await createTravelPartner(formData);
+            console.log("Travel Prtner Response>>>>",data)
+            // if (data.message == "Already Friends Profile is Present with the user") {
+            //     showMessage({ text: 'Friends profile created!', color: 'gray' })
+            // } else {
+            //     showMessage({ text: data.message, color: 'gray' })
+            // }
+        } else {
+            showMessage({ text: "All fields are mandatory!", color: 'gray' })
+        }
+    }
+
+    const updateTravelPartnerProfile = async () => {
+        console.log("validateFields()",validateFields())
+        if (validateFields()) {
+            showMessage({ text: "Fine!", color: 'gray' })
+            let finalData = { ...state, userId: user?._id }
+            let formData = new FormData();
+            formData.append("userId", user?._id);
+            formData.append("age", state.age);
+            formData.append("aboutMe", state.aboutMe);
+            formData.append("gender", state.gender);
+            formData.append("height", state.height);
+            formData.append("bodyType", state.bodyType);
+            formData.append("motherTongue", state.motherTongue);
+            formData.append("languagesKnown", state.languagesKnown);
+            formData.append("education", state.education);
+            formData.append("work", state.work);
+            formData.append("industry", state.industry);
+            formData.append("smoking", state.smoking);
+            formData.append("trips", state.tripDetails);
+            formData.append("drinking", state.drinking);
+            formData.append("interestedIn", state.interestedIn);
+           
+            console.log(">>>>>>>",formData);
+          let {data} = await updateTravelPartner(formData,state?.friendProfileId);
+          console.log(">>>>>>>>response>>>>>",data)
+         if (data.message == "Updated Successfully") {
+                showMessage({ text: 'Travel Patner profile Updated Successfully', color: 'gray' })
+            } else {
+                showMessage({ text: data.message, color: 'gray' })
+            }
+        } else {
+            showMessage({ text: "All fields are mandatory!", color: 'gray' })
+        }
+        
+    }
+
+
+
     const renderTripsList = (listData) => {
+       
         return (
             listData.map((item, index) => (
                 <View>
@@ -241,16 +363,19 @@ const EditNowComponent = () => {
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                             <Text style={styles.item}>{item.country},{item.state}</Text>
                         </View>
-                        <View style={{ backgroundColor: 'pink', padding: 4, borderRadius: 8 }}>
+                        <TouchableOpacity onPress={()=>{
+                            const Data = state.tripDetails.filter((item,index1) => index != index1)
+                            setState({...state, ['tripDetails'] :Data })
+                        }} style={{ backgroundColor: 'pink', padding: 4, borderRadius: 8 }}>
                             <MaterialCommunityIcons name="delete-outline" size={18} color="white" />
-                        </View>
+                        </TouchableOpacity>
                     </View>
                     <Text style={{
                         paddingHorizontal: 10,
                         fontSize: 14,
                         textAlign: "left",
                         fontWeight: '600',
-                    }}>{item.tripdate}</Text>
+                    }}>{item.date}</Text>
                     <View style={{ height: 1, width: '100%', backgroundColor: 'lightgray', marginVertical: 10 }} />
                 </View>
             ))
@@ -407,6 +532,7 @@ const EditNowComponent = () => {
                 </View>
 
                 {section5.map((item, index) => (
+                    <>
                     <View style={styles.list}>
                         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -414,14 +540,20 @@ const EditNowComponent = () => {
                                 {/* <FontAwesome name="travel" size={18} color="black" /> */}
                                 <Text style={styles.item}>Trips</Text>
                             </View>
-                            <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={()=>{setTripModalVisible(!tripModalVisible)}}>
                                 <Text style={styles.item}>+</Text>
                                 <Text style={[styles.item, { marginLeft: -15 }]}>Add</Text>
                             </TouchableOpacity>
                         </View>
                         <View style={{ height: 1, width: '100%', backgroundColor: 'lightgray', marginVertical: 10 }} />
-                        {renderTripsList(item.listData)}
+                       { state.tripDetails.length > 0 ?  renderTripsList(state.tripDetails) : null }
                     </View>
+                      <EditTextInputModal visibility={tripModalVisible} onAddButtonPressCb={(data)=>{
+                        
+                        setState({...state, ['tripDetails'] : [...state.tripDetails,data] })
+                        setTripModalVisible(!tripModalVisible)
+                    }}/>
+                    </>
                 ))}
 
 
@@ -458,6 +590,7 @@ const EditNowComponent = () => {
                                             :
                                             <CustomPickModel state={state} item={item} setState={setState} onSelectItem={() => setSelectedName('')} /> : null
                                     }
+                                  
                                 </>
                             )
                         })
@@ -499,7 +632,7 @@ const EditNowComponent = () => {
                         <Text style={styles.btnText}>Preview Profile</Text>
                     </TouchableOpacity>
                 </View><View style={styles.btnContainer1}>
-                    <TouchableOpacity onPress={() => isDetailsExist ? updateFriendsProfile() : saveTravelPartnerDetails()}>
+                    <TouchableOpacity onPress={() => isDetailsExist ? updateTravelPartnerProfile() : saveTravelPartnerDetails()}>
                         <Text style={styles.btnText1}>Save</Text>
                     </TouchableOpacity>
                 </View>

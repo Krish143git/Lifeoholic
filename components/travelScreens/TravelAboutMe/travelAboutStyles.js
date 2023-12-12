@@ -168,6 +168,21 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginVertical:10
   },
+  tripContainer:{
+    width:'100%',
+    borderWidth:0.2,
+    paddingHorizontal:15,
+    paddingVertical:10,
+    borderRadius:10,
+  },
+  tripDetails:{
+     flexDirection:'row',
+  },
+  tripText:{
+    fontSize:15,
+    fontFamily: "kollektif_bold",
+    paddingTop:5
+  },
 
   images: {
     width: width * 0.2,

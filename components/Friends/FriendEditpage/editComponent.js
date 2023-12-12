@@ -68,6 +68,7 @@ const EditComponent = (props) => {
 
     const getFriends = async () => {
         let data = await fetchFriends(user?._id);
+        console.log("Data>>>>>>",data)
         if (data.message == "fetched Successfully") {
             let uData = data.result;
             setIsDetailsExist(true);
@@ -134,8 +135,12 @@ const EditComponent = (props) => {
         formData.append("zodiacSign", state.zodiacSign);
         formData.append("userId", user?._id);
         formData.append("name", state.name);
-        let data = await updateFriends(formData, state?.friendProfileId);
-        console.log('updated dataaa', data);
+        let {data} = await updateFriends(formData, state?.friendProfileId);
+        if (data.message == "Already Friends Profile is Present with the user") {
+            showMessage({ text: 'Friends profile created!', color: 'gray' })
+        } else {
+            showMessage({ text: data.message, color: 'gray' })
+        }
     }
 
 

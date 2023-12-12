@@ -41,7 +41,7 @@ const AboutComponent = (props) => {
 
 
   const renderPersonalPreviewCard = (type) => {
-    console.log(type)
+    console.log(type+">>>>>"+personalData[type])
     switch (type) {
       case "age":
       return ( <TouchableOpacity style={styles.badge2}>
@@ -96,7 +96,7 @@ const AboutComponent = (props) => {
            case "languagesKnown":
             return ( <TouchableOpacity style={styles.badge2}>
            <Image source={require('../../../assets/images/language.png')} style={styles.icon} />
-              <Text style={styles.badgeText}>{personalData[type].join(',')}</Text>
+              <Text style={styles.badgeText}>{personalData[type]}</Text>
              </TouchableOpacity>)
              case "educationLevel":
               return ( <TouchableOpacity style={styles.badge2}>
@@ -113,7 +113,7 @@ const AboutComponent = (props) => {
            <FontAwesome5 name="comments-dollar" size={20} color="black" />
               <Text style={styles.badgeText}>{personalData[type]}</Text>
              </TouchableOpacity>)
-           case "somoking":
+           case "smoking":
             return ( <TouchableOpacity style={styles.badge2}>
            <FontAwesome5 name="smoking" size={20} color="black" />
               <Text style={styles.badgeText}>{personalData[type]}</Text>
@@ -134,7 +134,7 @@ const AboutComponent = (props) => {
               <Text style={styles.badgeText}>{personalData[type]}</Text>
              </TouchableOpacity>)
       default:
-        return null
+        return <View />
     }
   }
 
@@ -244,6 +244,7 @@ const AboutComponent = (props) => {
           <View style={styles.line} />
 
           <View style={styles.button}>
+            {console.log("Object.keys(personalData)>>>",Object.keys(personalData))}
             {
               Object.keys(personalData).map((item,ind)=>{
               return renderPersonalPreviewCard(item)
@@ -252,6 +253,7 @@ const AboutComponent = (props) => {
           </View>
 
           <View style={{ flexDirection: "row" }}>
+            { console.log("person>>>>>",personalData)}
             {person?.personality?.map((el) => (
               <TouchableOpacity style={styles.badge1}>
                 <Text>{el}</Text>
@@ -262,14 +264,21 @@ const AboutComponent = (props) => {
           <View style={styles.line} />
 
           <View>
-            <Text style={styles.subnames}>Interests</Text>
+            <Text style={styles.subnames}>Trips</Text>
             <View style={styles.button}>
+              {console.log("personalData?.tripDetails>>>>>>",personalData?.tripDetails)}
               {
-                personalData?.intrestedIn.map((item,ind)=> {
+                personalData?.tripDetails.map((item,ind)=> {
                   return (
-                    <TouchableOpacity style={styles.interest}>
-                    <Text style={styles.badgeText}>{item}</Text>
-                  </TouchableOpacity>
+                    <>
+                    <View style={styles.tripContainer}>
+                    <View style={styles.tripDetails}>
+                    <Text style={styles.tripText}>{item?.country},</Text>
+                    <Text style={styles.tripText}>{item?.state}</Text>
+                  </View>
+                  <Text style={styles.tripText}>{item?.date}</Text>
+                  </View>
+                  </>
                   )
                 })
               }
@@ -289,7 +298,7 @@ const AboutComponent = (props) => {
 
           <View style={styles.line} />
 
-          <View>
+          {/* <View>
           <Text style={styles.subnames}>Current Location</Text>
 
             <View style={{flexDirection:'row',marginHorizontal:15,marginVertical:10,alignItems:'center'}}>
@@ -301,7 +310,7 @@ const AboutComponent = (props) => {
             <Text style={styles.paraLoc}>{personalData?.currentLocation}</Text>
             </View>
             </View>
-          </View>
+          </View> */}
 
           <View style={styles.iconContainerBottom}>
             <TouchableOpacity style={styles.iconButonBottom}>

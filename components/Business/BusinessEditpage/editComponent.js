@@ -25,6 +25,7 @@ import { FontAwesome5, Ionicons, Octicons, FontAwesome, MaterialCommunityIcons, 
 import { fetchBusiness } from "../../../services/mainNav";
 import TextInputModal from "../../../common/TextInputModal";
 import { upperLowerCharacter } from "../../../common/Common";
+import { API_BASE_URL } from "../../../services/config";
 
 const { width, height } = Dimensions.get("screen");
 
@@ -38,24 +39,24 @@ const EditComponent = (props) => {
 
 
   const [state, setState] = React.useState({
-    name: '',
-    aboutMe: "",
-    lookingFor: "",
-    aboutBusiness: "",
-    educationLevel: "",
-    education: "",
-    school: "",
+    name: 'HI',
+    aboutMe: "F",
+    lookingFor: "F",
+    aboutBusiness: "F",
+    educationLevel: "F",
+    education: "F",
+    school: "F",
     areUStudent: false,
-    experience: "",
-    jobTitle: "",
-    industry: "",
-    organisation: "",
-    awardsAndAchievements: [],
-    languagesKnown: [],
-    personality: [],
-    interestedIn: [],
-    homeTown: "",
-    currentLocation: ""
+    experience: "D",
+    jobTitle: "D",
+    industry: "D",
+    organisation: "D",
+    awardsAndAchievements: ["D"],
+    languagesKnown: ["D"],
+    personality: ["D"],
+    interestedIn: ["D"],
+    homeTown: "D",
+    currentLocation: "D"
   });
 
   const SWITCH_SIZE = Platform.OS === "ios" ? 0.5 : 0.9;
@@ -185,15 +186,10 @@ const EditComponent = (props) => {
     }).catch((error) => {
       setUserId(error)
     })
-    fetchData();
     fetchBusinessData();
   }, []);
 
-  const fetchData = async () => {
-    let user = await userServices.fetchBasicDetails();
-    let friendsDetail = await userServices.fetchFriendsData();
-    console.log(friendsDetail);
-  };
+
 
   const fetchBusinessData = async () => {
     AsyncStorage.getItem('personalData').then(async (res) => {
@@ -276,10 +272,47 @@ const EditComponent = (props) => {
     )
   }
 
+  const createBusinessProfiles =async () => {
+    try {
+      const response = await axios.post(`${API_BASE_URL}/data/bussiness/create`, {
+        userId: userid,
+        aboutMe: state.aboutMe,
+        lookingFor: state.lookingFor,
+        aboutBusiness: state.aboutBusiness,
+        educationLevel: state.educationLevel,
+        education: state.education,
+        school: state.school,
+        areUStudent: state.areUStudent,
+        experience: state.areUStudent ? "" : state.experience,
+        jobTitle: state.areUStudent ? "" : state.jobTitle,
+        industry: state.areUStudent ? "" : state.industry,
+        organization: state.areUStudent ? "" : state.organisation,
+        awardsAndAchievements: state.awardsAndAchievements,
+        languageKnown: state.languagesKnown,
+        personality: state.personality,
+        interestedIn: state.interestedIn,
+        homeTown: state.homeTown,
+        currentLocation: state.currentLocation
+      });
+      // Process the API response here
+      if (response.status === 200) {
+        // Details updated successfully
+        Alert.alert('Success', 'Details Created successfully');
+      } else {
+        // Handle other response statuses if needed
+        Alert.alert('Error', 'Failed to Create Business details');
+      }
+    } catch (error) {
+      alert(error.message)
+      // Handle any errors that occurred during the API call
+      Alert.alert('Error', 'An error occurred while updating details');
+    }
+  };
+
 
   const updateDetails = async () => {
     try {
-      const response = await axios.post('http://16.171.175.25:3000/api/v1/data/details/update/645f89826cf2f6a700de0cde', {
+      const response = await axios.put(`${API_BASE_URL}/data/matchM/update/${""}`, {
         userId: userid,
         aboutMe: state.aboutMe,
         lookingFor: state.lookingFor,
@@ -579,7 +612,7 @@ const EditComponent = (props) => {
           </TouchableOpacity>
         </View>
         <View style={styles.btnContainer1}>
-          <TouchableOpacity onPress={() => updateDetails()}>
+          <TouchableOpacity onPress={() => createBusinessProfiles()}>
             <Text style={styles.btnText1}>Save</Text>
           </TouchableOpacity>
         </View>

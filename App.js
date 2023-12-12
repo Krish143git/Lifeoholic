@@ -66,6 +66,7 @@ import FindFriendsComponent from "./components/findfriends/FindFriendsComponent"
 import ResetPassword from "./components/resetpassword";
 import PasswordUpdateSucess from "./components/successupdate/PasswordUpdateSuccess";
 import Map from "./components/main/discover/friends/map";
+import ChatScreen from "./components/main/chat/personalChat";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -186,6 +187,7 @@ export default function App() {
                 },
               }}
             />
+            <Stack.Screen name="personalChat" component={ChatScreen} />
             <Stack.Screen name="Form" component={DetailsForm} />
             <Stack.Screen name="AllowLocation" component={GrantLocation} />
             <Stack.Screen name="Map" component={Map} />

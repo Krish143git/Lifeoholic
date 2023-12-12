@@ -47,11 +47,16 @@ export default function Home1() {
 
   const fetchPosts = async () => {
     setLoading(true)
-    let data = await HomeService.fetchPost();
-    console.log('daaattaa',data)
-    setPost([...data]);
-    setLoading(false)
-  };
+    try{
+      let data = await HomeService.fetchPost();
+      console.log('daaattaa',data)
+      setPost([...data]);
+      setLoading(false)
+
+    }catch(error){
+      setLoading(false);
+    }
+  }
 
   const fetchCategories = async () => {
     let data = await HomeService.fetchCategories();
