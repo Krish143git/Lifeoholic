@@ -17,16 +17,16 @@ const DetailsComponent = () => {
     
     const [state, setState] = useState({
         userId:'',
-        firstName:'',
-        lastName:'',
-        email: '',
-        age: '',
-        gender: '',
-        motherTongue: '',
-        education: '',
-        work: '',
-        location: '',
-        hometown: '',
+        firstName:'k',
+        lastName:'k',
+        email: 'k',
+        age: 'k',
+        gender: 'k',
+        motherTongue: 'k',
+        education: 'k',
+        work: 'k',
+        location: 'k',
+        hometown: 'k',
         // height: '',
         // religion: ''
         // interestedIn: '',
@@ -121,19 +121,25 @@ useEffect(()=> {
       };
 
     const SubmitForm = async () => {
+        console.log("payload>>>>>>",state)
+        Navigation.navigate('ProfileImageUpload');
        
         if (validate()) {
-            setLoading(true)
+            setLoading(false)
             const payload = state;
             //needs to optimize here
             payload.userId = userIds;
+           
             InstanceWithOutToken.post(
               `${API_BASE_URL}/data/details/create`,
                JSON.stringify(payload)
             ).then(res => {
+                console.log("responsE>>>>>>>>",res)
+
                     AsyncStorage.setItem('userData',JSON.stringify(res.data));
                     setLoading(false)
                 }).then(res => {
+                    console.log("responsE>>>>>>>>",res)
                     setLoading(false)
                     Navigation.navigate('ProfileImageUpload');
                     setState({
@@ -156,6 +162,7 @@ useEffect(()=> {
                     })
                 })
                 .catch(err => {
+                    console.log("responsE>>>>>>>>",err)
                     setLoading(false)
                     console.log(err);
                     // setState({
@@ -278,14 +285,26 @@ useEffect(()=> {
                         </View>
 
                         <View>
-                            <TextInput
+                            {/* <TextInput
                                 style={styles.input}
                                 placeholder="Please enter your Mother Tongue "
                                 editable={true}
                                 name="motherTongue"
                                 value={motherTongue}
                                 onChangeText={(motherTongue) => setState({ ...state, motherTongue })}
-                            />
+                            /> */}
+                            <View style={styles.picker}>
+                            <Picker
+                                selectedValue={motherTongue}
+                                onValueChange={(motherTongue) =>
+                                    setState({ ...state, motherTongue })
+                                }>
+                                <Picker.Item label='Please enter your Mother Tongue...' value='0' style={{ color: 'lightgray' }} />
+                                <Picker.Item label="Telugu" value="Telugu" />
+                                <Picker.Item label="Tamil" value="Tamil" />
+                                <Picker.Item label="Hindi" value="Hindi" />
+                            </Picker>
+                        </View>
                         </View>
                     </View>
 
@@ -296,14 +315,26 @@ useEffect(()=> {
                             </Text>
                         </View>
                         <View>
-                            <TextInput
+                            {/* <TextInput
                                 style={styles.input}
                                 placeholder="Please enter your Education "
                                 editable={true}
                                 name="education"
                                 value={education}
                                 onChangeText={(education) => setState({ ...state, education })}
-                            />
+                            /> */}
+                               <View style={styles.picker}>
+                            <Picker
+                                selectedValue={education}
+                                onValueChange={(education) =>
+                                    setState({ ...state, education })
+                                }>
+                                <Picker.Item label='Please enter your Education' value='0' style={{ color: 'lightgray' }} />
+                                <Picker.Item label="Inter" value="Inter" />
+                                <Picker.Item label="Degree" value="Degree" />
+                                <Picker.Item label="BTech" value="BTech" />
+                            </Picker>
+                        </View>
                         </View>
                     </View>
 
@@ -314,14 +345,26 @@ useEffect(()=> {
                             </Text>
                         </View>
                         <View>
-                            <TextInput
+                            {/* <TextInput
                                 style={styles.input}
                                 placeholder="Please enter your Work "
                                 editable={true}
                                 name="work"
                                 value={work}
                                 onChangeText={(work) => setState({ ...state, work })}
-                            />
+                            /> */}
+                            <View style={styles.picker}>
+                            <Picker
+                                selectedValue={work}
+                                onValueChange={( work) =>
+                                    setState({ ...state, work })
+                                }>
+                                <Picker.Item label='Please enter your Work ' value='0' style={{ color: 'lightgray' }} />
+                                <Picker.Item label="Accounts" value="Accounts" />
+                                <Picker.Item label="Managing" value="Managing" />
+                                <Picker.Item label="Software" value="Software" />
+                            </Picker>
+                        </View>
                         </View>
                     </View>
                     {/* <View style={styles.formGroup}>
@@ -350,14 +393,26 @@ useEffect(()=> {
                             </Text>
                         </View>
                         <View>
-                            <TextInput
+                            {/* <TextInput
                                 style={styles.input}
                                 placeholder="Please enter your Location "
                                 editable={true}
                                 name="location"
                                 value={location}
                                 onChangeText={(location) => setState({ ...state, location })}
-                            />
+                            /> */}
+                            <View style={styles.picker}>
+                            <Picker
+                                selectedValue={location}
+                                onValueChange={( location) =>
+                                    setState({ ...state, location })
+                                }>
+                                <Picker.Item label='Please enter your Location ' value='0' style={{ color: 'lightgray' }} />
+                                <Picker.Item label="Hyderabad" value="Hyderabad" />
+                                <Picker.Item label="Banglore" value="Banglore" />
+                                <Picker.Item label="Mumbai" value="Mumbai" />
+                            </Picker>
+                        </View>
                         </View>
                     </View>
 
@@ -368,14 +423,27 @@ useEffect(()=> {
                             </Text>
                         </View>
                         <View>
-                            <TextInput
+                            {/* <TextInput
                                 style={styles.input}
                                 placeholder="Please enter your Home Town "
                                 editable={true}
                                 name="hometown"
                                 value={hometown}
                                 onChangeText={(hometown) => setState({ ...state, hometown })}
-                            />
+                            /> */}
+
+                        <View style={styles.picker}>
+                            <Picker
+                                selectedValue={hometown}
+                                onValueChange={( hometown) =>
+                                    setState({ ...state, hometown })
+                                }>
+                                <Picker.Item label='Please enter your Home Town ' value='0' style={{ color: 'lightgray' }} />
+                                <Picker.Item label="Hyderabad" value="Hyderabad" />
+                                <Picker.Item label="Banglore" value="Banglore" />
+                                <Picker.Item label="Mumbai" value="Mumbai" />
+                            </Picker>
+                        </View>
                         </View>
                     </View>
                     {/* <View style={styles.formGroup}>
@@ -513,7 +581,7 @@ useEffect(()=> {
                     </View> */}
 
                     <View style={styles.btnContainer}>
-                        <TouchableOpacity onPress={() => { SubmitForm() }} >
+                        <TouchableOpacity onPress={ SubmitForm} >
                             <Text style={styles.btnText}>Next</Text>
                         </TouchableOpacity>
                     </View>

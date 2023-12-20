@@ -14,11 +14,11 @@ import { showMessage } from '../../../hoc/showMessage'
 const { width, height } = Dimensions.get('screen');
 
 const EditComponent = (props) => {
-    const Navigation = useNavigation();
     const isCarousel = React.useRef(null);
     const [selectedName, setSelectedName] = React.useState('');
     const [user, setUser] = React.useState(null);
     const [isDetailsExist, setIsDetailsExist] = React.useState(false);
+    const navigation = useNavigation();
 
     const [state, setState] = React.useState({
         name: '',
@@ -111,7 +111,12 @@ const EditComponent = (props) => {
         return true;
     }
 
+    const navigateTo = (name, type) => {
+      
+      };
+
     const updateFriendsProfile = async () => {
+       
         let formData = new FormData();
         formData.append("aboutMe", state.aboutMe);
         formData.append("age", state.age);
@@ -135,9 +140,10 @@ const EditComponent = (props) => {
         formData.append("zodiacSign", state.zodiacSign);
         formData.append("userId", user?._id);
         formData.append("name", state.name);
-        let {data} = await updateFriends(formData, state?.friendProfileId);
+        let {data} = await updateFriends(formData, state?.friendProfileId);     
         if (data.message == "Already Friends Profile is Present with the user") {
             showMessage({ text: 'Friends profile created!', color: 'gray' })
+            navigation.navigate("Home1",{screen: "Discover",params: { type:"friends" },})
         } else {
             showMessage({ text: data.message, color: 'gray' })
         }
@@ -173,6 +179,7 @@ const EditComponent = (props) => {
           let data = await createFriends(formData);
             if (data.message == "Already Friends Profile is Present with the user") {
                 showMessage({ text: 'Friends profile created!', color: 'gray' })
+                navigation.navigate("Home1",{screen: "Discover",params: { type:"friends" },})
             } else {
                 showMessage({ text: data.message, color: 'gray' })
             }

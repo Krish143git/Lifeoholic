@@ -66,12 +66,14 @@ const EditNowComponent = () => {
     }, [])
 
     useEffect(() => {
-        getFriends()
+        if( user){
+            getFriends()
+        }       
     }, [user])
 
     const getFriends = async () => {
         let data = await fetchMatchMaking(user?._id);
-        console.log("data>>>>>",data)
+        console.log("data>>>>>>>>>>>>>>>>>>>>>",data)
         if (data.message == "Successfully fetched the data") {
             let uData = data.result;
             setIsDetailsExist(true);
@@ -317,11 +319,12 @@ const EditNowComponent = () => {
           
              let data = await createMatchMaking(formData);
               console.log(">>>>>>",data)
-            // if (data.message == "Already match making Profile is Present with the user") {
-            //     showMessage({ text: 'Friends profile created!', color: 'gray' })
-            // } else {
-            //     showMessage({ text: data.message, color: 'gray' })
-            // }
+            if (data.message == "Already match making Profile is Present with the user") {
+                showMessage({ text: 'Friends profile created!', color: 'gray' })
+                Navigation.navigate("Home1",{screen: "Discover",params: { type:"match" }})
+            } else {
+                showMessage({ text: data.message, color: 'gray' })
+            }
         } else {
             showMessage({ text: "All fields are mandatory!", color: 'gray' })
         }
@@ -357,16 +360,18 @@ const EditNowComponent = () => {
             // formData.append("images", state.images);
         
           let data = await updateMatchMaking(formData,state?.friendProfileId);
-          console.log("ata>>>>>>",data)
+          console.log("UdateSpibjbjata>>>>>>",data)
+           if (data.message == "Already Friends Profile is Present with the user") {
+                showMessage({ text: 'Friends profile created!', color: 'gray' })
+                Navigation.navigate("Home1",{screen: "Discover",params: { type:"match" }})
+            } else {
+                showMessage({ text: data.message, color: 'gray' })
+            }
+        } else {
+            showMessage({ text: "All fields are mandatory!", color: 'gray' })
         }
-        //  if (data.message == "Already Friends Profile is Present with the user") {
-        //         showMessage({ text: 'Friends profile created!', color: 'gray' })
-        //     } else {
-        //         showMessage({ text: data.message, color: 'gray' })
-        //     }
-        // } else {
-        //     showMessage({ text: "All fields are mandatory!", color: 'gray' })
-        // }
+        
+        
     }
 
 

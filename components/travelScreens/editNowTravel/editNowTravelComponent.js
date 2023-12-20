@@ -26,7 +26,7 @@ const EditNowComponent = () => {
     const [state, setState] = React.useState({
         name: 'Sai Chand',
         age: 26,
-        aboutMe: 'This is sai chand',
+        aboutMe: 'This is Hero',
         gender: 'Male',
         height: 162,
         bodyType: 'Slim',
@@ -60,15 +60,17 @@ const EditNowComponent = () => {
     }, [])
 
     useEffect(() => {
-        getFriends()
+         if(user){
+            getFriends()
+         } 
     }, [user])
 
     const getFriends = async () => {
         let data = await fetchTravelPartner(user?._id);
-        console.log(">>>>>>>>Data>>>>",data)
+        console.log(">>>>>>>>Fetch Travel Data>>>>",data)
         if (data.message == "Suceessfully fetched the data") {
             let uData = data.result;
-            // setIsDetailsExist(true);
+            setIsDetailsExist(true);
             setState({
                 ...state,
                 friendProfileId: uData._id,
@@ -303,14 +305,16 @@ const EditNowComponent = () => {
             formData.append("drinking", state.drinking);
             formData.append("interestedIn", state.interestedIn);
             formData.append("trips", state.tripDetails);
-           
+            console.log(">>>>>>>",formData);
             let data = await createTravelPartner(formData);
+            
             console.log("Travel Prtner Response>>>>",data)
-            // if (data.message == "Already Friends Profile is Present with the user") {
-            //     showMessage({ text: 'Friends profile created!', color: 'gray' })
-            // } else {
-            //     showMessage({ text: data.message, color: 'gray' })
-            // }
+            if (data.message == "Already Friends Profile is Present with the user") {
+                showMessage({ text: 'Friends profile created!', color: 'gray' })
+                Navigation.navigate("Home1",{screen: "Discover",params: { type:"" }})
+            } else {
+                showMessage({ text: data.message, color: 'gray' })
+            }
         } else {
             showMessage({ text: "All fields are mandatory!", color: 'gray' })
         }
@@ -340,9 +344,10 @@ const EditNowComponent = () => {
            
             console.log(">>>>>>>",formData);
           let {data} = await updateTravelPartner(formData,state?.friendProfileId);
-          console.log(">>>>>>>>response>>>>>",data)
+
          if (data.message == "Updated Successfully") {
                 showMessage({ text: 'Travel Patner profile Updated Successfully', color: 'gray' })
+                Navigation.navigate("Home1",{screen: "Discover",params: { type:"" }})
             } else {
                 showMessage({ text: data.message, color: 'gray' })
             }

@@ -20,18 +20,6 @@ export const createFriends = async (data) => {
   })
   return resp;
 };
-export const createBusinessProfile = async (data) => {
-  let resp = await axios.post(
-    `${API_BASE_URL}/data/bussiness/create`, data, {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  }
-  ).then((res) => {
-    return res.data;
-  })
-  return resp;
-};
 
 export const createMatchMaking = async (data) => {
   let resp = await axios.post(
@@ -49,6 +37,21 @@ export const createMatchMaking = async (data) => {
 export const createTravelPartner = async (data) => {
   let resp = await axios.post(
     `${API_BASE_URL}/data/travelP/create`, data, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  }
+  ).then((res) => {
+    return res.data;
+  }).catch((err) => {
+    console.log('error', err);
+  })
+  return resp;
+};
+
+export const createBusinessProfile = async (data) => {
+  let resp = await axios.post(
+    `${API_BASE_URL}/data/bussiness/create`, data, {
     headers: {
       "Content-Type": "multipart/form-data",
     },

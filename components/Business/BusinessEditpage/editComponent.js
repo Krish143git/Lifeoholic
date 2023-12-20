@@ -22,7 +22,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from "@react-navigation/native";
 import CustomPickModel from '../../../common/CustomPickModel/CustomPickModel';
 import { FontAwesome5, Ionicons, Octicons, FontAwesome, MaterialCommunityIcons, Entypo, MaterialIcons } from '@expo/vector-icons';
-import { fetchBusiness } from "../../../services/mainNav";
+import { createBusinessProfile, fetchBusiness } from "../../../services/mainNav";
 import TextInputModal from "../../../common/TextInputModal";
 import { upperLowerCharacter } from "../../../common/Common";
 import { API_BASE_URL } from "../../../services/config";
@@ -201,6 +201,7 @@ const EditComponent = (props) => {
         })
 
       }
+       console.log("usrData._id>>>>",usrData)
       const data = await fetchBusiness(usrData._id);
       console.log('usrData', data)
     })
@@ -274,6 +275,8 @@ const EditComponent = (props) => {
 
   const createBusinessProfiles =async () => {
     try {
+       console.log( "user>>>>",userid)
+
       const response = await axios.post(`${API_BASE_URL}/data/bussiness/create`, {
         userId: userid,
         aboutMe: state.aboutMe,
@@ -294,10 +297,31 @@ const EditComponent = (props) => {
         homeTown: state.homeTown,
         currentLocation: state.currentLocation
       });
+       console.log("response>>>>>",response)
+
+      // let formData = new FormData();
+      // formData.append("userId", userid);
+      // formData.append("aboutMe", state.aboutMe);
+      // formData.append("lookingFor", user?._id);
+      // formData.append("aboutBusiness", user?._id);
+      // formData.append("educationLevel", user?._id);
+      // formData.append("school", user?._id);
+      // formData.append("areUStudent", user?._id);
+      // formData.append("experience", user?._id);
+      // formData.append("jobTitle", user?._id);
+      // formData.append("education", user?._id);
+      // formData.append("education", user?._id);
+
+      // formData.append("education", user?._id);
+    
+
+      //  const response =  await createBusinessProfile(formData)
+        // console.log("response>>>>>>>>",response)
       // Process the API response here
       if (response.status === 200) {
         // Details updated successfully
         Alert.alert('Success', 'Details Created successfully');
+        Navigation.navigate("Home1",{screen: "Discover",params: { type:"business" }})
       } else {
         // Handle other response statuses if needed
         Alert.alert('Error', 'Failed to Create Business details');
@@ -337,6 +361,7 @@ const EditComponent = (props) => {
       if (response.status === 200) {
         // Details updated successfully
         Alert.alert('Success', 'Details updated successfully');
+        Navigation.navigate("Home1",{screen: "Discover",params: { type:"business" }})
       } else {
         // Handle other response statuses if needed
         Alert.alert('Error', 'Failed to update details');

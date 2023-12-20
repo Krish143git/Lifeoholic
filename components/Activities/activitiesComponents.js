@@ -1,4 +1,4 @@
-import { View, Text, FlatList, Switch,AsyncStorage } from 'react-native'
+import { View, Text, FlatList, Switch,AsyncStorage, SafeAreaView, StatusBar } from 'react-native'
 import { useEffect, useState,TouchableOpacity  } from 'react';
 import React from 'react';
 import styles from './activitiesStyles';
@@ -40,6 +40,7 @@ const ActivitiesComponents = (props) => {
 
   return (
     <>
+    <SafeAreaView style={{ flex:1,paddingTop: StatusBar.currentHeight}}>
       <View style={styles.container}>
         <View style={styles.header}>
           <FlatList
@@ -48,9 +49,6 @@ const ActivitiesComponents = (props) => {
               { key: 'Check Older Activities' },
 
             ]}
-
-
-
             renderItem={({ item }) => {
               return (
                 <View >
@@ -86,6 +84,7 @@ const ActivitiesComponents = (props) => {
         </View>
 
       </View>
+      </SafeAreaView>
 
     </>
 

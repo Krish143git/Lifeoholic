@@ -58,6 +58,7 @@ const MainNavComponent = () => {
 
   const fetchToggle = async () => {
     setLoading(true)
+    try{
     let profileImage = await getProfileImage();
     setProfileImage(profileImage.image);
     let data = await getProfileToggles();
@@ -68,6 +69,9 @@ const MainNavComponent = () => {
     // }
     setToggles(profileToggles);
     setLoading(false)
+    }catch(err){
+      setLoading(false)
+    }  
   };
 
   const onToggle = async (nav) => {

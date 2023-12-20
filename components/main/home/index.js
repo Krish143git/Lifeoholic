@@ -33,17 +33,23 @@ export default function Home1() {
   const [loading,setLoading] = useState(false);
   const Tab = createBottomTabNavigator();
   useEffect(() => {
-    const fetchProfileImage = async () => {
-      let image = await getProfileImage();
-      setProfileImage(image.image);
-    };
     fetchProfileImage();
-  }, []);
-
-  useEffect(() => {
     fetchPosts();
     fetchCategories();
   }, []);
+
+  const fetchProfileImage = async () => {
+    setLoading(true)
+    try{
+      let image = await getProfileImage();
+      setProfileImage(image.image);
+      setLoading(false)
+    }
+    catch(error){
+      setLoading(false)
+    }
+    
+  };
 
   const fetchPosts = async () => {
     setLoading(true)
@@ -59,9 +65,14 @@ export default function Home1() {
   }
 
   const fetchCategories = async () => {
-    let data = await HomeService.fetchCategories();
-    console.log(data);
-    setCategories([...data]);
+    setLoading(true);
+    try{
+      let data = await HomeService.fetchCategories();
+      setCategories([...data]);
+      setLoading(false);
+    }catch(err){
+      setLoading(false);
+    }
   };
 
 

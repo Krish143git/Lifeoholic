@@ -33,7 +33,7 @@ const Signup = () => {
 
 
     const signup = () => {
-        // alert(JSON.stringify(state));
+        alert(JSON.stringify(state));
         Navigation.navigate('Form');
         if (validate()) {
               setLoading(true)

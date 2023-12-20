@@ -37,7 +37,7 @@ AsyncStorage.getItem('userdata').then((res)=>
   console.log(error);
 })
     // setPersonalData(userdata)
-    fetchProfileImage();
+     fetchProfileImage();
 
   }, []);
 
@@ -73,8 +73,7 @@ AsyncStorage.getItem('userdata').then((res)=>
 
     if (!result.canceled) {
       let _images = images;
-      console.log(result, images);
-      _images[index] = result;
+      _images[images.length] = result?.assets[0];
       setImages([..._images]);
     }
   };
@@ -94,7 +93,7 @@ AsyncStorage.getItem('userdata').then((res)=>
     }).catch((error)=>
     {
       console.log(error.message);
-    })
+    }) 
     console.log(index,'index')
     if(!index){
       pickImage("camera", index)
@@ -107,7 +106,7 @@ AsyncStorage.getItem('userdata').then((res)=>
   const handleUpdateImage = async () => {
     console.log('clicked')
     try {
-      var pattern = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([\/\w .-]*)*\/?$/;
+     var pattern = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([\/\w .-]*)*\/?$/;
       let userId =JSON.parse(await AsyncStorage.getItem("userId"));
       for (let img of images) {
         if (pattern.test(img.uri)) {
@@ -190,7 +189,7 @@ AsyncStorage.getItem('userdata').then((res)=>
                     style={styles.uploadBox}
                     onPress={() => handleUpload(i)}
                     disabled={images[i] ? true : false}
-                  >
+                  >           
                     {images.length >= i + 1 ? (
                       <>
                        <TouchableOpacity 
@@ -235,7 +234,7 @@ AsyncStorage.getItem('userdata').then((res)=>
           >
             <Text style={{ fontWeight: "bold", fontSize: 18 }}>Back</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.nextBtn} onPress={()=>{handleUpdateImage()}}>
+          <TouchableOpacity style={styles.nextBtn} onPress={handleUpdateImage}>
             <Text style={{ fontWeight: "bold", fontSize: 18, color: "#fff" }}>
               Upload{`(${images.length})`}
             </Text>
